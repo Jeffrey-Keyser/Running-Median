@@ -54,6 +54,31 @@ public class MedianStream
      */
     private static void runInteractiveMode()
     {
+    	MedianStream s = new MedianStream();
+    	
+    	
+    	Scanner in = new Scanner(System.in);
+    	boolean done = false;
+    	double d = 0;
+    	
+    	
+    	
+    	while (!done)
+    	{
+    		System.out.println(s.PROMPT_NEXT_VALUE);
+    		if (in.hasNextDouble())
+    		{
+    			d = in.nextDouble();
+    			s.currentMedian = s.getMedian(d);
+    			System.out.println("Current median: " + s.currentMedian);
+    		}
+    		else
+    		{
+    			done = true;
+    		}
+    		
+    	}
+    	
 
     }
 
@@ -76,6 +101,25 @@ public class MedianStream
      */
     private static void findMedianForFile(String filename)
     {
+    	MedianStream s = new MedianStream();
+    	File inFile = new File(filename);
+    	Scanner input = null;
+    	
+    	try{
+    		input = new Scanner(inFile);
+    		
+
+    		
+    		while(input.hasNextInt()){
+    			double store = input.nextInt();
+    			s.currentMedian = s.getMedian(store);
+    			System.out.println(s.currentMedian);
+    		}
+    	}
+    	catch (FileNotFoundException e)
+    	{
+    		System.out.println(FNF_MESSAGE);
+    	}
 
     }
 
@@ -94,7 +138,28 @@ public class MedianStream
      */
     private Double getMedian(Double newReading)
     {
-
+		//if the heaps are the same size the median will always be on the top of the minHeap
+		if(this.maxHeap.size() == this.minHeap.size()){
+			this.minHeap.insert(newReading);
+			this.currentMedian = this.minHeap.getMax();
+			return currentMedian;
+		}
+		else if (this.minHeap.size() == this.maxHeap.size() - 1)
+		{
+			this.minHeap.insert(newReading);
+			return ((this.maxHeap.getMax() + this.minHeap.getMax()) / 2);
+		}
+		else if (this.minHeap.size() == this.maxHeap.size() + 1)
+		{
+			double maxVal = this.minHeap.removeMax();
+			this.maxHeap.insert(maxVal);
+			this.minHeap.insert(newReading);
+			return ((this.maxHeap.getMax() + this.minHeap.getMax()) / 2);
+		}
+		
+		return currentMedian;
+    	
+    	
     }
 
     // DO NOT EDIT THE main METHOD.

@@ -83,7 +83,11 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 
 		@Override
 		public E getMax() throws EmptyQueueException {
-			return items[1];
+			
+			if (items[numItems - 1].compareTo(items[numItems]) < 0)
+				return items[numItems];
+			
+			return items[numItems - 1];
 		}
 
 
@@ -133,7 +137,6 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 			
 	
 
-		@Override
 		public int size() {
 			return numItems;
 		}
@@ -147,7 +150,11 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 		}
 		
 		private int compareTo(E obj){
-			if( this < (Integer) obj)
+			
+			if (this.equals(obj))
+				return 0;
+		
+			
 			
 		}
 

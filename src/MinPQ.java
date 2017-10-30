@@ -33,50 +33,16 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 
 	@Override
 	public void insert(E item) {
-		
-		boolean done = false;
-		
-		if (item == null)
-			throw new IllegalArgumentException();
-		if (numItems == items.length - 1)
-			expandArray();
-		
-		items[numItems + 1] = item;
-		
-	//	if (items[numItems + 1].compareTo(items[(numItems + 1) / 2]) > 0)	// FIX LATER
-	//	{
-		
-		while (!done)
-		{
-			E parent = items[(numItems + 1) / 2];
-			if ((Integer) parent == 0)
-				done = true;
-			
-			
-			if (items[numItems + 1].compareTo(parent) > 0)
-			
-			
-		}
-		
-			// IF ITEM > PARENT
-			
-			
-			
-			
-			
-			
-		}
-			
-		
-		
-		
-		
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public E getMax() throws EmptyQueueException {
-		return items[1];
+		if (items[numItems - 1].compareTo(items[numItems]))
+			return items[numItems];
+		
+		return items[numItems - 1];
 	}
 
 	@Override
@@ -89,4 +55,5 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 	public int size() {
 		return numItems;
 	}
+
 }
