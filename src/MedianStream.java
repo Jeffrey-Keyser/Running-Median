@@ -62,7 +62,6 @@ public class MedianStream
     	double d = 0;
     	
     	
-    	
     	while (!done)
     	{
     		System.out.println(s.PROMPT_NEXT_VALUE);
@@ -138,8 +137,42 @@ public class MedianStream
      */
     private Double getMedian(Double newReading)
     {
-		//if the heaps are the same size the median will always be on the top of the minHeap
-		if(this.maxHeap.size() == this.minHeap.size()){
+    	if (maxHeap.getMax() == null)
+    	{
+    		this.maxHeap.insert(newReading);	
+    		return maxHeap.getMax();
+    	}
+    		
+    	if (newReading <= this.currentMedian)
+    		this.maxHeap.insert(newReading);
+    	else 
+    		this.minHeap.insert(newReading);
+    	
+    	if (this.minHeap.size() > this.maxHeap.size() + 1)
+    	{
+    		maxHeap.insert(minHeap.removeMax());
+    	}
+    	else if (this.maxHeap.size() > this.minHeap.size() + 1)
+    	{
+    		minHeap.insert(maxHeap.removeMax());
+    	}
+    	
+    	if(this.maxHeap.size() == this.minHeap.size()){
+    		return ((this.maxHeap.getMax() + this.minHeap.getMax()) / 2);
+		}
+    	else if (this.maxHeap.size() > this.minHeap.size())
+    	{
+    		minHeap.insert(maxHeap.removeMax());
+    		return minHeap.getMax();
+    	}
+    	else
+    	{
+    		maxHeap.insert(minHeap.removeMax());
+    		return maxHeap.getMax();
+    	}
+    	
+    	
+  		/*if(this.maxHeap.size() == this.minHeap.size()){
 			this.minHeap.insert(newReading);
 			this.currentMedian = this.minHeap.getMax();
 			return currentMedian;
@@ -156,8 +189,10 @@ public class MedianStream
 			this.minHeap.insert(newReading);
 			return ((this.maxHeap.getMax() + this.minHeap.getMax()) / 2);
 		}
+		*/
 		
-		return currentMedian;
+    	
+	//	return currentMedian;
     	
     	
     }

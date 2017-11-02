@@ -20,7 +20,7 @@ public class MaxPQ<E> implements PriorityQueueADT<E>
 	    public MaxPQ()
 	    {
 	        this.items = (E[]) new Comparable[INITIAL_SIZE];
-
+	        numItems = 0;
 	        // TO-DO: Complete the constructor for any private data fields that you add.
 	    }
 
