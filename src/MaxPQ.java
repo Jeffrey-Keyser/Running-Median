@@ -8,13 +8,14 @@
  * 5. DO NOT implement a shadow array.
  */
 
-public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
+public class MaxPQ<E> implements PriorityQueueADT<E>
 {
-	 private E[] items;
+	
+
+	 	private E[] items;
 	    private static final int INITIAL_SIZE = 10;
 	    private int numItems = 0;
 
-	    //ADD MORE DATA PRIVATE DATA FIELDS AS YOU NEED.
 
 	    public MaxPQ()
 	    {
@@ -31,9 +32,10 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 			return false;
 		}
 
-		@Override
+
 		public void insert(E item) {
 			
+			 
 			boolean done = false;
 			
 			if (item == null)
@@ -42,23 +44,23 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 				expandArray();
 			
 			items[numItems + 1] = item;
+
+			E child = item;
 			
-		//	if (items[numItems + 1].compareTo(items[(numItems + 1) / 2]) > 0)	// FIX LATER
-		//	{
-			E child = items[(numItems + 1)];
-			int index = numItems + 1;
+			//store index at one after numItems because increment comes later
+			int childIndex = numItems + 1;
 			
-			index = index / 2;
+			int parentIndex = childIndex / 2;
 			
-			E parent = items[index];
+			E parent = items[parentIndex];
 			
 			while (!done)
 			{
 			
-				if ((Integer) parent == 0)
+				if ((Double) parent == null)
 					done = true;
 				
-				else if (parent.compareTo(child) >= 0)
+				else if (((Double) parent).compareTo((Double)child) >= 0)
 				{
 					done = true;
 				}
@@ -68,72 +70,140 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 					//array
 					E temp; 
 					temp = child;
-					items[index * 2] = parent;
-					items[index] = temp;
+					items[childIndex] = parent;
+					items[parentIndex] = temp;
 					
-					//reassigning the parent and child for the next time through the while loop
-					child = parent;
-					index = index / 2;
-					parent = items[index];
+					//reassigning the new child to the old parent and it's index
+					child = items[parentIndex];
+					childIndex = parentIndex;
+					
+					//reassigning new parent in the tree
+					parentIndex = childIndex / 2;
+					parent = items[parentIndex];
 				}
-				numItems++;
-			}
 				
 			}
+				numItems++;
+			}
 
-		@Override
+
 		public E getMax() throws EmptyQueueException {
 			
-			if (items[numItems - 1].compareTo(items[numItems]) < 0)
-				return items[numItems];
+			return items[1];
 			
-			return items[numItems - 1];
 		}
 
 
 		public E removeMax() throws EmptyQueueException {
 			E max = items[1];
+			int childIndex = 1;
+			
 			boolean done = false;
+			
+			// Swap the last value with the front
+			// Set the last value to null
 			items[1] = items[numItems];
-			int index = 0;
-			E parent = items[1];
+			items[numItems] = null;
 			
-			E child = items[2];
-			E child2 = items[3];
-			index = 2;
-			//making sure it is being swapped with the highest value
-			if(child.compareTo(child2) < 0){
-				child = child2;
-				index = 3;
-			}
-			 
+			int parentIndex = 1;
+			E parent = items[parentIndex];
 			
-			while (!done)
+			while (childIndex < numItems)
 			{
-	
-				if (parent.compareTo(child) >= 0)
+				
+			E child = items[2*parentIndex];
+			E child2 = items[(2*parentIndex)+1];
+			
+			// If there are no more children, stop comparing
+			if (child == null && child2 == null)
+				break;
+				
+			// If one of the children is null
+			// Enter this condition to check the other child
+			if (child == null || child2 == null)
+			{
+				if (child == null)
 				{
-					done = true;
-				}
-				else
-				{
-					//storing child into temporary variable and swapping the values of child and parent in the 
-					//array
-					E temp; 
-					temp = child;
-					items[index * 2] = parent;
-					items[index] = temp;
+					if (((Double) child2).compareTo((Double)parent) >= 0)
+					{
+						// Set the index of the child we are switching with
+						childIndex = parentIndex * 2 + 1;
+						
+						// Do the swap
+						E temp = parent;
+						items[parentIndex] = child2;
+						items[childIndex] = temp;
+						
+						
+						// Set the new indexes
+						parentIndex = childIndex;
+					}
+					else
+						break;
 					
-					//reassigning the parent and child for the next time through the while loop
-					child = parent;
-					index = index / 2;
-					parent = items[index];
 				}
-				numItems++;
+				if (child2 == null)
+				{
+					if (((Double) child).compareTo((Double)parent) >= 0)
+					{
+						// Set the index of the child we are switching with
+						childIndex = parentIndex * 2;
+						
+						// Do the swap
+						E temp = parent;
+						items[parentIndex] = child;
+						items[childIndex] = temp;
+						
+						
+						// Set the new indexes
+						parentIndex = childIndex;
+					}
+					else
+						break;
+					
+				}
 			}
+			
+			//making sure it is being swapped with the highest value
+			
+			
+			
+			else if(((Double) child).compareTo((Double)child2) <= 0 && ((Double) child2).compareTo((Double)parent) >= 0){
+				// Set the index of the child we are switching with
+				childIndex = parentIndex * 2 + 1;
+				
+				// Do the swap
+				E temp = parent;
+				items[parentIndex] = child2;
+				items[childIndex] = temp;
+				
+				
+				// Set the new indexes
+				parentIndex = childIndex;
+
+				
+			}
+			else if (((Double) child).compareTo((Double)child2) > 0 && ((Double) child).compareTo((Double)parent) > 0){
+				childIndex = parentIndex * 2;
+				
+				// Do the swap
+				E temp = parent;
+				items[parentIndex] = child;
+				items[childIndex] = temp;
+				
+				
+				// Set the new indexes
+				parentIndex = childIndex;
+			}
+				
+				
+			}
+			numItems--;
+			return max;
 				
 			}
 			
+		
 			
 	
 
@@ -149,13 +219,40 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 			 items = expand;
 		}
 		
-		private int compareTo(E obj){
-			
-			if (this.equals(obj))
-				return 0;
 		
+		public static void main(String args[])
+		
+		{
+			MaxPQ<Double> quene = new MaxPQ<Double>();
+					
+			quene.insert(60.0);
+			quene.insert(80.0);
+			quene.insert(70.0);
+			quene.insert(40.0);
+			quene.insert(10.0);
+			quene.insert(5.0);
+			quene.insert(100.0);
+
+
+			
+//		for (int i = 0; i < quene.size(); i++)
+//			{
+//			System.out.println(items[i]);
+//			}
+			
+			System.out.println(quene.getMax());
+			
+			System.out.println(quene.removeMax());
+			
 			
 			
 		}
+		
+		
+		
+		
+		
+		
+		
 
 	}

@@ -39,7 +39,7 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 
 	@Override
 	public E getMax() throws EmptyQueueException {
-		if (items[numItems - 1].compareTo(items[numItems]))
+		if (items[numItems - 1].compareTo(items[numItems]) < 0)
 			return items[numItems];
 		
 		return items[numItems - 1];

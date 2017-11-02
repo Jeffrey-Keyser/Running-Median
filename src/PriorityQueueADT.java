@@ -1,6 +1,6 @@
 // DO NOT EDIT THIS INTERFACE
 
-public interface PriorityQueueADT<E extends Comparable<E>>
+public interface PriorityQueueADT<E>
 {
 
     /**
