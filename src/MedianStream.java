@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
@@ -100,6 +101,16 @@ public class MedianStream
      */
     private static void findMedianForFile(String filename)
     {
+    	PrintWriter writer = null;
+    	try 
+    	{
+    	writer = new PrintWriter(filename + "_out", "UTF-8");
+    	}
+    	catch (IOException e)
+    	{
+    		System.out.println(FNF_MESSAGE);
+    	}
+    	
     	MedianStream s = new MedianStream();
     	File inFile = new File(filename);
     	Scanner input = null;
@@ -112,13 +123,24 @@ public class MedianStream
     		while(input.hasNextInt()){
     			double store = input.nextInt();
     			s.currentMedian = s.getMedian(store);
-    			System.out.println(s.currentMedian);
+    			
+    			System.out.printf("%.3f", s.currentMedian);
+    			System.out.println();
+    			
+    			writer.print("   ");
+    			writer.printf("%.3f", s.currentMedian);
+    			writer.println();
+    			
+    	//		System.out.println();
+    			
     		}
     	}
     	catch (FileNotFoundException e)
     	{
     		System.out.println(FNF_MESSAGE);
     	}
+    	
+    	writer.close();
 
     }
 
@@ -137,17 +159,24 @@ public class MedianStream
      */
     private Double getMedian(Double newReading)
     {
+    	// If both queues are empty add to maxQuene
     	if (maxHeap.getMax() == null)
     	{
     		this.maxHeap.insert(newReading);	
     		return maxHeap.getMax();
     	}
     		
+    	// All new values above the median go into the maxHeap
+    	// Values below the median go into minHeap
     	if (newReading <= this.currentMedian)
     		this.maxHeap.insert(newReading);
     	else 
     		this.minHeap.insert(newReading);
     	
+    	
+    	// Keeps the heaps within size + 1 of each other
+    	// If the size the one of the Heaps is greater by 2 or more
+    	// Add the max to the other heap
     	if (this.minHeap.size() > this.maxHeap.size() + 1)
     	{
     		maxHeap.insert(minHeap.removeMax());
@@ -157,9 +186,12 @@ public class MedianStream
     		minHeap.insert(maxHeap.removeMax());
     	}
     	
+    	// The average of the two middle terms
     	if(this.maxHeap.size() == this.minHeap.size()){
     		return ((this.maxHeap.getMax() + this.minHeap.getMax()) / 2);
 		}
+    	
+    	
     	else if (this.maxHeap.size() > this.minHeap.size())
     	{
     		minHeap.insert(maxHeap.removeMax());

@@ -8,7 +8,7 @@
  * 5. DO NOT implement a shadow array.
  */
 import java.util.*;
-public class MinPQ<E> implements PriorityQueueADT<E>
+public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 {
     private E[] items;
     private static final int INITIAL_SIZE = 10;
@@ -174,7 +174,8 @@ public class MinPQ<E> implements PriorityQueueADT<E>
 		//making sure it is being swapped with the highest value
 		
 		
-		
+		// If child2 is the lowest between its parent and its sibling
+		// swap child2 and parent
 		else if(((Double) child).compareTo((Double)child2) >= 0 && ((Double) child2).compareTo((Double)parent) <= 0){
 			// Set the index of the child we are switching with
 			childIndex = parentIndex * 2 + 1;
@@ -190,6 +191,8 @@ public class MinPQ<E> implements PriorityQueueADT<E>
 
 			
 		}
+		// If child is the lowest between its parent and its sibling
+		// Swap child and parent
 		else if (((Double) child).compareTo((Double)child2) < 0 && ((Double) child).compareTo((Double)parent) < 0){
 			childIndex = parentIndex * 2;
 			
@@ -201,6 +204,12 @@ public class MinPQ<E> implements PriorityQueueADT<E>
 			
 			// Set the new indexes
 			parentIndex = childIndex;
+		}
+		// If parent is less then both child & child2
+		// Stop the reheapify method
+		else if (((Double) parent).compareTo((Double)child2) <= 0 && ((Double) parent).compareTo((Double)child2) <= 0)
+		{
+			break;
 		}
 			
 			
@@ -216,7 +225,7 @@ public class MinPQ<E> implements PriorityQueueADT<E>
 	}
 	
 	private void expandArray(){
-		 E[]expand = (E[]) new Comparable[INITIAL_SIZE * 2];
+		 E[]expand = (E[]) new Comparable[items.length * 2];
 		 for(int k = 0; k <= numItems; k++){
 			 expand[k] = items[k];
 		 }

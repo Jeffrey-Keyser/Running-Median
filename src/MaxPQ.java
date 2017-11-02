@@ -8,7 +8,7 @@
  * 5. DO NOT implement a shadow array.
  */
 
-public class MaxPQ<E> implements PriorityQueueADT<E>
+public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 {
 	
 
@@ -95,6 +95,7 @@ public class MaxPQ<E> implements PriorityQueueADT<E>
 
 
 		public E removeMax() throws EmptyQueueException {
+			E child;
 			E max = items[1];
 			int childIndex = 1;
 			
@@ -111,7 +112,14 @@ public class MaxPQ<E> implements PriorityQueueADT<E>
 			while (childIndex < numItems)
 			{
 				
-			E child = items[2*parentIndex];
+			try
+			{
+			child = items[2*parentIndex];
+			}
+			catch(ArrayIndexOutOfBoundsException e)
+			{
+				break;
+			}
 			E child2 = items[(2*parentIndex)+1];
 			
 			// If there are no more children, stop comparing
@@ -195,6 +203,13 @@ public class MaxPQ<E> implements PriorityQueueADT<E>
 				// Set the new indexes
 				parentIndex = childIndex;
 			}
+			
+			// If the parent is greater then child & child2
+			// Stop the reheapify method
+			else if (((Double) parent).compareTo((Double)child2) >= 0 && ((Double) parent).compareTo((Double)child2) >= 0)
+			{
+				break;
+			}
 				
 				
 			}
@@ -212,7 +227,7 @@ public class MaxPQ<E> implements PriorityQueueADT<E>
 		}
 		
 		private void expandArray(){
-			 E[]expand = (E[]) new Comparable[INITIAL_SIZE * 2];
+			 E[]expand = (E[]) new Comparable[items.length * 2];
 			 for(int k = 0; k <= numItems; k++){
 				 expand[k] = items[k];
 			 }
