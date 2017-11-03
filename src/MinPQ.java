@@ -38,8 +38,10 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 		
 		boolean done = false;
 		
-		if (item == null)
+		if (!((Double) item instanceof Double) )
 			throw new IllegalArgumentException();
+	//	if (item == null)
+	//		throw new IllegalArgumentException();
 		if (numItems == items.length - 1)
 			expandArray();
 		

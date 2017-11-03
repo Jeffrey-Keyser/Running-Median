@@ -38,8 +38,10 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 			 
 			boolean done = false;
 			
-			if (item == null)
+			if (!((Double) item instanceof Double) )
 				throw new IllegalArgumentException();
+		//	if (item == null)
+		//		throw new IllegalArgumentException();
 			if (numItems == items.length - 1)
 				expandArray();
 			
@@ -246,8 +248,8 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 		
 		{
 			MaxPQ<Double> quene = new MaxPQ<Double>();
-					
-			quene.insert(60.0);
+
+			quene.insert(50.0);
 			quene.insert(80.0);
 			quene.insert(70.0);
 			quene.insert(40.0);
