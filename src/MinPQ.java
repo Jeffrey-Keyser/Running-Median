@@ -89,18 +89,12 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 
 	@Override
 	public E getMax() throws EmptyQueueException {
-		if (numItems == 0)
-			throw new EmptyQueueException();
-		
 	    E maximum = items[1];
 	    return maximum;
 	}
 
 	@Override
 	public E removeMax() throws EmptyQueueException {
-		if (numItems == 0)
-			throw new EmptyQueueException();
-		
 		E max = items[1];
 		int childIndex = 1;
 		E child;

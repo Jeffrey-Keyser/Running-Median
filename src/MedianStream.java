@@ -66,30 +66,20 @@ public class MedianStream
     	while (!done)
     	{
     		System.out.println(s.PROMPT_NEXT_VALUE);
-    		
-    		String input = in.nextLine();
-    		input = input.trim();
-    		
-    		try {
-    		
-    		
-    			d = Double.parseDouble(input);
+    		if (in.hasNextDouble())
+    		{
+    			d = in.nextDouble();
     			s.currentMedian = s.getMedian(d);
     			System.out.println("Current median: " + s.currentMedian);
     		}
-    		catch(NumberFormatException e)
+    		else
     		{
-    			if (input.equals("q"))
-    			done = true;
-    	
-    			else
-    		{
-    			System.out.println(EXIT_MESSAGE);
     			done = true;
     		}
-
-    		}
+    		
     	}
+    	
+
     }
 
     /**
@@ -114,7 +104,7 @@ public class MedianStream
     	PrintWriter writer = null;
     	try 
     	{
-    	writer = new PrintWriter(DOUBLE_FORMAT);
+    	writer = new PrintWriter(filename + "_out", "UTF-8");
     	}
     	catch (IOException e)
     	{
@@ -170,7 +160,7 @@ public class MedianStream
     private Double getMedian(Double newReading)
     {
     	// If both queues are empty add to maxQuene
-    	if (maxHeap.size() == 0)
+    	if (maxHeap.getMax() == null)
     	{
     		this.maxHeap.insert(newReading);	
     		return maxHeap.getMax();

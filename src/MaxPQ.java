@@ -89,18 +89,12 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 
 		public E getMax() throws EmptyQueueException {
 			
-			if (numItems == 0)
-				throw new EmptyQueueException();
-			
 			return items[1];
 			
 		}
 
 
 		public E removeMax() throws EmptyQueueException {
-			if (numItems == 0)
-				throw new EmptyQueueException();
-			
 			E child;
 			E max = items[1];
 			int childIndex = 1;
@@ -246,19 +240,6 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 		{
 			MaxPQ<Double> quene = new MaxPQ<Double>();
 					
-			
-
-
-			
-//		for (int i = 0; i < quene.size(); i++)
-//			{
-//			System.out.println(items[i]);
-//			}
-			System.out.println(quene.removeMax());
-			System.out.println(quene.getMax());
-			
-			
-			
 			quene.insert(60.0);
 			quene.insert(80.0);
 			quene.insert(70.0);
@@ -266,6 +247,19 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 			quene.insert(10.0);
 			quene.insert(5.0);
 			quene.insert(100.0);
+
+
+			
+//		for (int i = 0; i < quene.size(); i++)
+//			{
+//			System.out.println(items[i]);
+//			}
+			
+			System.out.println(quene.getMax());
+			
+			System.out.println(quene.removeMax());
+			
+			
 			
 		}
 		
