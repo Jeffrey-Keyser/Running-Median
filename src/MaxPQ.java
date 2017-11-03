@@ -89,12 +89,19 @@ public class MaxPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 
 		public E getMax() throws EmptyQueueException {
 			
+			if (numItems == 0)
+				throw new EmptyQueueException();
+			
 			return items[1];
 			
 		}
 
 
 		public E removeMax() throws EmptyQueueException {
+			
+			if (numItems == 0)
+				throw new EmptyQueueException();
+			
 			E child;
 			E max = items[1];
 			int childIndex = 1;

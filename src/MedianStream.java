@@ -173,7 +173,7 @@ MedianStream s = new MedianStream();
     private Double getMedian(Double newReading)
     {
     	// If both queues are empty add to maxQuene
-    	if (maxHeap.getMax() == null)
+    	if (maxHeap.size() == 0)
     	{
     		this.maxHeap.insert(newReading);	
     		return maxHeap.getMax();
