@@ -113,23 +113,24 @@ MedianStream s = new MedianStream();
     private static void findMedianForFile(String filename)
     {
     	PrintWriter writer = null;
-    	String[] filenameArray = filename.split("\\.");
-    	String name = filenameArray[0];
-    	String extension = filenameArray[1];
-    	try 
-    	{
-    	writer = new PrintWriter(name + "_out." + extension, "UTF-8");
-    	}
-    	catch (IOException e)
-    	{
-    		System.out.println(FNF_MESSAGE);
-    	}
-    	
-    	MedianStream s = new MedianStream();
-    	File inFile = new File(filename);
-    	Scanner input = null;
-    	
+    	  	
     	try{
+    		
+    		String[] filenameArray = filename.split("\\.");
+    	
+    		if (filenameArray.length != 2)
+    			throw new IOException();
+    		
+    		String name = filenameArray[0];
+    		String extension = filenameArray[1];
+    
+    		writer = new PrintWriter(name + "_out." + extension, "UTF-8");
+    	
+    		MedianStream s = new MedianStream();
+    		File inFile = new File(filename);
+    		Scanner input = null;
+    		
+    		
     		input = new Scanner(inFile);
     		
 
@@ -147,13 +148,24 @@ MedianStream s = new MedianStream();
     	//		System.out.println();
     			
     		}
+    		
+    		writer.close();
+    		input.close();
     	}
     	catch (FileNotFoundException e)
     	{
-    		System.out.println(FNF_MESSAGE);
+    		System.out.println(filename + FNF_MESSAGE);
+    		writer.close();
+    		
+
+    	}
+    	catch(IOException e)
+    	{
+    		System.out.println(filename + FNF_MESSAGE);
+    	//	writer.close();
     	}
     	
-    	writer.close();
+    	
 
     }
 
