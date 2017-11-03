@@ -55,7 +55,7 @@ public class MedianStream
      */
     private static void runInteractiveMode()
     {
-    	MedianStream s = new MedianStream();
+MedianStream s = new MedianStream();
     	
     	
     	Scanner in = new Scanner(System.in);
@@ -66,21 +66,32 @@ public class MedianStream
     	while (!done)
     	{
     		System.out.println(s.PROMPT_NEXT_VALUE);
-    		if (in.hasNextDouble())
-    		{
-    			d = in.nextDouble();
+    		
+    		String input = in.nextLine();
+    		input = input.trim();
+    		
+    		try {
+    		
+    		
+    			d = Double.parseDouble(input);
     			s.currentMedian = s.getMedian(d);
-    			System.out.println("Current median: " + s.currentMedian);
+    			System.out.println(MEDIAN + s.currentMedian);
     		}
-    		else
+    		catch(NumberFormatException e)
     		{
+    			if (input.equals("q"))
+    			done = true;
+    	
+    			else
+    		{
+    			System.out.println(EXIT_MESSAGE);
     			done = true;
     		}
-    		
-    	}
-    	
 
+    		}
+    	}
     }
+    
 
     /**
      * This method is called if the user passes command line arguments.
@@ -102,9 +113,12 @@ public class MedianStream
     private static void findMedianForFile(String filename)
     {
     	PrintWriter writer = null;
+    	String[] filenameArray = filename.split("\\.");
+    	String name = filenameArray[0];
+    	String extension = filenameArray[1];
     	try 
     	{
-    	writer = new PrintWriter(filename + "_out", "UTF-8");
+    	writer = new PrintWriter(name + "_out." + extension, "UTF-8");
     	}
     	catch (IOException e)
     	{
@@ -124,12 +138,11 @@ public class MedianStream
     			double store = input.nextInt();
     			s.currentMedian = s.getMedian(store);
     			
-    			System.out.printf("%.3f", s.currentMedian);
+    			System.out.printf(DOUBLE_FORMAT, s.currentMedian);
     			System.out.println();
     			
-    			writer.print("   ");
-    			writer.printf("%.3f", s.currentMedian);
-    			writer.println();
+    			writer.printf(DOUBLE_FORMAT, s.currentMedian);
+    			
     			
     	//		System.out.println();
     			
