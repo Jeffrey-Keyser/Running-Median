@@ -1,31 +1,52 @@
-/**
- * GENERAL DIRECTIONS -
- *
- * 1. You may add private data fields and private methods as you see fit.
- * 2. Implement ALL the methods defined in the PriorityQueueADT interface.
- * 3. DO NOT change the name of the methods defined in the PriorityQueueADT interface.
- * 4. DO NOT edit the PriorityQueueADT interface.
- * 5. DO NOT implement a shadow array.
+///////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  MedianStream.java
+// File:             MaxPQ.java
+// Semester:         Fall 2017
+//
+// Author:           Jeffrey Keyser	jkeyser@wisc.edu
+// CS Login:         keyser
+// Lecturer's Name:  Debra Deppeler
+// Lab Section:      N/A
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION ////////////////////
+//
+// Pair Partner:     Ben Hayes
+// Email:            bhayes6@wisc.edu
+// CS Login:         bhayes6
+// Lecturer's Name:  Debra Deppeler
+// Lab Section:      N/A
+//
+/**CLASS COMMENT
+ * This class represents is Minimum Priority Queue where the minimum value is stored
+ * at the top of the Priority Queue. It has methods to add and remove, but it 
+ * always keep the order by "reheapifying" as learned in lecture.
+ * The internal data structure for this ADT is an array.
  */
+
 import java.util.*;
 public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 {
+	//internal data structure is an array with initial size
     private E[] items;
     private static final int INITIAL_SIZE = 10;
     private int numItems = 0;
-    private int lowestLevel = 0;
-    private int maxIndex;
 
-    //ADD MORE DATA PRIVATE DATA FIELDS AS YOU NEED.
-
+    
+    //default constructor
     public MinPQ()
     {
+    	//must initialize with comparable items
         this.items = (E[]) new Comparable[INITIAL_SIZE];
         numItems = 0;
-        // TO-DO: Complete the constructor for any private data fields that you add.
+      
     }
 
-	@Override
+    /**
+	 * Checks the queue to indicate if it is empty
+	 *
+	 * @return true if the queue is empty, false otherwise
+	 */
 	public boolean isEmpty() {
 		if (numItems == 0)
 			return true;
@@ -33,20 +54,29 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 		return false;
 	}
 
-	@Override
+	/**
+	 * Inserts a new item to the MinPQ. After insertion, the 
+	 * minPQ "reheapifies" to ensure that each child is less then
+	 * or equal to the parent
+	 *
+	 * @param (E item) Item to be inserted. Can assume it is type Double 
+	 */
 	public void insert(E item) {
 		
 		boolean done = false;
-		
+		// If item is not of type Double, throw a IllegalArguementException
 		if (!((Double) item instanceof Double) )
 			throw new IllegalArgumentException();
-	//	if (item == null)
-	//		throw new IllegalArgumentException();
+
+		// If the number of items exceeds the size of the array, 
+		// expand the array
 		if (numItems == items.length - 1)
 			expandArray();
 		
+		// Add the item to the end of the list
 		items[numItems + 1] = item;
 		
+		// Store the last index as the child
 		E child = item;
 		
 		//store index at one after numItems because increment comes later
@@ -54,9 +84,9 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 		
 		
 		int parentIndex = childIndex / 2;
-		
 		E parent = items[parentIndex];
 		
+		// "Reheapify"
 		while (!done)
 			{
 			
@@ -89,7 +119,9 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 				numItems++;
 			}
 
-	@Override
+	/**
+	 *Returns the value at the of minPQ, but does not change the the structure of the queue. 
+	 */
 	public E getMax() throws EmptyQueueException {
 		if (numItems == 0)
 			throw new EmptyQueueException();
@@ -98,7 +130,10 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 	    return maximum;
 	}
 
-	@Override
+	/**
+	 *Returns the minimum in the minPQ and then "reheapifies" the queue
+	 *to keep the structure, to keep the minimum value on the top. 
+	 */
 	public E removeMax() throws EmptyQueueException {
 		
 		if (numItems == 0)
@@ -107,7 +142,7 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 		E max = items[1];
 		int childIndex = 1;
 		E child;
-		boolean done = false;
+
 		
 		// Swap the last value with the front
 		// Set the last value to null
@@ -117,6 +152,9 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 		int parentIndex = 1;
 		E parent = items[parentIndex];
 		
+		
+		// While we are within the number of items
+		// in the array
 		while (childIndex < numItems)
 		{
 			
@@ -228,11 +266,17 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 			
 		}
 
-	@Override
+	/**
+	 * Returns the number of items
+	 */
 	public int size() {
 		return numItems;
 	}
 	
+	
+	/**
+	 * Expands the current array to twice it's size and copies all the elements over.
+	 */
 	private void expandArray(){
 		 E[]expand = (E[]) new Comparable[items.length * 2];
 		 for(int k = 0; k <= numItems; k++){
@@ -240,60 +284,4 @@ public class MinPQ<E extends Comparable<E>> implements PriorityQueueADT<E>
 		 }
 		 items = expand;
 	}
-
-	
-	public static void main(String args[])
-	
-	{
-		MinPQ<Double> quene = new MinPQ<Double>();
-				
-		quene.insert(60.0);
-		quene.insert(80.0);
-		quene.insert(70.0);
-		quene.insert(40.0);
-		quene.insert(10.0);
-		quene.insert(5.0);
-		quene.insert(100.0);
-		quene.insert(240.0);
-		quene.insert(100.0);
-		quene.insert(140.0);
-		quene.insert(30.0);
-		quene.insert(200.0);
-		quene.insert(23.0);
-		quene.insert(50.0);
-
-		
-//	for (int i = 0; i < quene.size(); i++)
-//		{
-//		System.out.println(items[i]);
-//		}
-		
-		System.out.println(quene.getMax());
-		System.out.println(quene.removeMax());
-		
-		System.out.println(quene.getMax());
-		System.out.println(quene.removeMax());
-		
-		System.out.println(quene.getMax());
-		System.out.println(quene.removeMax());
-		
-		System.out.println(quene.getMax());
-		System.out.println(quene.removeMax());
-		
-		System.out.println(quene.getMax());
-		System.out.println(quene.removeMax());
-		
-		System.out.println(quene.getMax());
-		System.out.println(quene.removeMax());
-		
-		System.out.println(quene.getMax());
-
-		System.out.println(quene.removeMax());
-
-		
-		
-		
-	}
-	
-	
 }

@@ -1,9 +1,46 @@
+///////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Title:            Running Median
+// Files:            MedianStream.java , MinPQ.java , MaxPQ.java ,
+//					 EmptyQueueExcepetion.java , PriorityQueueADT.java
+// Semester:         Fall 201
+//
+// Author:           Jeffrey Keyser
+// Email:            jkeyser@wisc.edu
+// CS Login:         keyser
+// Lecturer's Name:  Debra Deppeler
+// Lab Section:      N/A
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION ////////////////////
+//
+//                   CHECK ASSIGNMENT PAGE TO see IF PAIR-PROGRAMMING IS ALLOWED
+//                   If pair programming is allowed:
+//                   1. Read PAIR-PROGRAMMING policy (in cs302 policy) 
+//                   2. choose a partner wisely
+//                   3. REGISTER THE TEAM BEFORE YOU WORK TOGETHER 
+//                      a. one partner creates the team
+//                      b. the other partner must join the team
+//                   4. complete this section for each program file.
+//
+// Pair Partner:     Ben Hayes
+// Email:            bhayes6@wisc.edu
+// CS Login:         bhayes6
+// Lecturer's Name:  Debra Deppeler
+// Lab Section:      N/A
+//
+
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+/**CLASS COMMENT
+ * This class represents contains the main method for P3. It
+ * has two modes where either the user enters data or the data is scanned in from a file.
+ * When the user enters 'q'  the program is ended. In file mode if are the program executes the
+ * media values are written to a file.
+ */
 public class MedianStream
 {
 
@@ -24,8 +61,6 @@ public class MedianStream
     private MinPQ<Double> minHeap;
 
     /**
-     * Override Default Constructor
-     *
      *  Initialize the currentMedian = 0.0
      *  Create a new MaxPQ and MinPQ.
      */
@@ -55,33 +90,40 @@ public class MedianStream
      */
     private static void runInteractiveMode()
     {
-MedianStream s = new MedianStream();
+
+    	MedianStream s = new MedianStream();
     	
-    	
+    	//creates scanner for user input
     	Scanner in = new Scanner(System.in);
     	boolean done = false;
     	double d = 0;
     	
-    	
+    	//user interaction loop exits when user enters 'q'
     	while (!done)
     	{
-    		System.out.println(s.PROMPT_NEXT_VALUE);
+    		System.out.print(s.PROMPT_NEXT_VALUE);
     		
     		String input = in.nextLine();
     		input = input.trim();
     		
     		try {
     		
-    		
+    			
     			d = Double.parseDouble(input);
     			s.currentMedian = s.getMedian(d);
-    			System.out.println(MEDIAN + s.currentMedian);
+    			
+    			//output to user
+    			System.out.print(MEDIAN);
+    			System.out.printf(DOUBLE_FORMAT, s.currentMedian);
     		}
     		catch(NumberFormatException e)
     		{
+    			//end the loop if the user inputs q
     			if (input.equals("q"))
     			done = true;
     	
+    			//if the user inputs something other then q
+    			//display the exit message
     			else
     		{
     			System.out.println(EXIT_MESSAGE);
@@ -115,7 +157,7 @@ MedianStream s = new MedianStream();
     	PrintWriter writer = null;
     	  	
     	try{
-    		
+    	
     		String[] filenameArray = filename.split("\\.");
     	
     		if (filenameArray.length != 2)
@@ -123,9 +165,10 @@ MedianStream s = new MedianStream();
     		
     		String name = filenameArray[0];
     		String extension = filenameArray[1];
-    
+    		
+    		//writing to file with name of the input file
     		writer = new PrintWriter(name + "_out." + extension, "UTF-8");
-    	
+    		
     		MedianStream s = new MedianStream();
     		File inFile = new File(filename);
     		Scanner input = null;
@@ -134,24 +177,22 @@ MedianStream s = new MedianStream();
     		input = new Scanner(inFile);
     		
 
-    		
+    		//getting input from file
     		while(input.hasNextInt()){
     			double store = input.nextInt();
     			s.currentMedian = s.getMedian(store);
     			
     			System.out.printf(DOUBLE_FORMAT, s.currentMedian);
-    			System.out.println();
     			
     			writer.printf(DOUBLE_FORMAT, s.currentMedian);
-    			
-    			
-    	//		System.out.println();
     			
     		}
     		
     		writer.close();
     		input.close();
     	}
+ 
+    	//catching potential error of inputing file
     	catch (FileNotFoundException e)
     	{
     		System.out.println(filename + FNF_MESSAGE);
@@ -159,10 +200,10 @@ MedianStream s = new MedianStream();
     		
 
     	}
+   
     	catch(IOException e)
     	{
     		System.out.println(filename + FNF_MESSAGE);
-    	//	writer.close();
     	}
     	
     	
@@ -170,10 +211,6 @@ MedianStream s = new MedianStream();
     }
 
     /**
-     * YOU ARE NOT COMPULSORILY REQUIRED TO IMPLEMENT THIS METHOD.
-     *
-     * That said, we found it useful to implement.
-     *
      * Adds the new temperature reading to the corresponding
      * maxPQ or minPQ depending upon the current state.
      *
@@ -211,12 +248,14 @@ MedianStream s = new MedianStream();
     		minHeap.insert(maxHeap.removeMax());
     	}
     	
-    	// The average of the two middle terms
+    	// If the two heaps are the same size
+    	// The average of the two middle terms is the median
     	if(this.maxHeap.size() == this.minHeap.size()){
     		return ((this.maxHeap.getMax() + this.minHeap.getMax()) / 2);
 		}
     	
-    	
+    	//keeping the two data structures close within 1 size of the other
+    	//if max heap is too large insert into min heap
     	else if (this.maxHeap.size() > this.minHeap.size())
     	{
     		minHeap.insert(maxHeap.removeMax());
@@ -227,34 +266,9 @@ MedianStream s = new MedianStream();
     		maxHeap.insert(minHeap.removeMax());
     		return maxHeap.getMax();
     	}
-    	
-    	
-  		/*if(this.maxHeap.size() == this.minHeap.size()){
-			this.minHeap.insert(newReading);
-			this.currentMedian = this.minHeap.getMax();
-			return currentMedian;
-		}
-		else if (this.minHeap.size() == this.maxHeap.size() - 1)
-		{
-			this.minHeap.insert(newReading);
-			return ((this.maxHeap.getMax() + this.minHeap.getMax()) / 2);
-		}
-		else if (this.minHeap.size() == this.maxHeap.size() + 1)
-		{
-			double maxVal = this.minHeap.removeMax();
-			this.maxHeap.insert(maxVal);
-			this.minHeap.insert(newReading);
-			return ((this.maxHeap.getMax() + this.minHeap.getMax()) / 2);
-		}
-		*/
-		
-    	
-	//	return currentMedian;
-    	
-    	
+    		
     }
 
-    // DO NOT EDIT THE main METHOD.
     public static void main(String[] args)
     {
         // Check if files have been passed in the command line.
